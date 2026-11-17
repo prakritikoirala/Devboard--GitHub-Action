@@ -1,4 +1,3 @@
-# Goal: Build the image for Devboad Frontend and push to Docker hub
 name: CI
 
 on:
@@ -12,8 +11,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      - name: Dockr Setup[Login]
+      - name: Docker Login
         uses: docker/login-action@v4
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Docker Build and Push
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/devboard-fe-master:latest
